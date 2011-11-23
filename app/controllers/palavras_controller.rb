@@ -1,3 +1,4 @@
+# encoding: utf-8
 class PalavrasController < ApplicationController
   # GET /palavras
   # GET /palavras.json
@@ -94,7 +95,7 @@ class PalavrasController < ApplicationController
     
     before = Palavra.count
     @word[0].each do |string|
-      unless string.match(params[:word])
+      unless string.scan(params[:word]).empty?
         Palavra.create(word: params[:word])
         yeah = true
       end
@@ -103,12 +104,12 @@ class PalavrasController < ApplicationController
     
     message = ""
     message << "Word was found .. " if yeah
-    message << "Palavra nao encontrada ... " unless yeah
+    message << "Word not found ... " unless yeah
 
-    if before == after && yeah
-      message << "But it was already on our DB."
+    if before == after
+      message << "But it is already on our DB."
     else
-      message << "And inserted on DB !"
+      message << " Inserted on DB !"
     end
 
     redirect_to palavras_url, notice: message 
