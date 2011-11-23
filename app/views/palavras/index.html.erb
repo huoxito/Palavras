@@ -1,0 +1,34 @@
+<h1>Listing palavras</h1>
+
+<%= form_tag(search_palavras_path) do %>
+  <%= text_field_tag(:word) %>
+  <%= submit_tag("Get Word") %>
+<% end %>
+
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+    <th>Word</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @palavras.each do |palavra| %>
+  <tr>
+    <td style="font-size: 20px; padding: 0 20px;"><%= palavra.word %></td>
+    <td><%= button_to 'Post to Twitter', { action: "twitter", word: palavra.word } %></td>
+    <td><%= link_to 'Post to Facebook', palavra %></td>
+    <td><%= link_to 'Show', palavra %></td>
+    <td><%= link_to 'Edit', edit_palavra_path(palavra) %></td>
+    <td><%= link_to 'Destroy', palavra, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Palavra', new_palavra_path %>
