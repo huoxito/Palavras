@@ -130,4 +130,31 @@ class PalavrasController < ApplicationController
     redirect_to palavras_url, notice: "Posted to twitter" 
   end
 
+  def facebook
+    auth = FbGraph::Auth.new("143306939107919", "d94493c784b5f9e10f13ff0dd17c2562")
+    auth.client.redirect_uri = "http://localhost:3000/palavras/face_callback"
+    redirect_to auth.client.authorization_uri(
+        :scope => [:email, :publish_stream, :read_stream, :offline_access]
+    )
+  end
+
+  def face_callback
+
+    auth = FbGraph::Auth.new("143306939107919", "d94493c784b5f9e10f13ff0dd17c2562")
+    auth.client.redirect_uri = "http://localhost:3000/palavras/face_callback"
+    auth.client.authorization_code = params[:code]
+    access_token = auth.client.access_token!  # => Rack::OAuth2::AccessToken
+    me = FbGraph::User.me(access_token)
+    me.feed!(
+       :message => 'Updating via FbGraph the word',
+       #:picture => 'https://graph.facebook.com/matake/picture',
+       #:link => 'http://github.com/nov/fb_graph',
+       #:name => 'FbGraph',
+       #:description => 'A Ruby wrapper for Facebook Graph API'
+    )
+    # FbGraph::User.me(access_token).fetch # => FbGraph::User
+
+    redirect_to palavras_url, notice: "Posted to facebook"  
+  end
+
 end

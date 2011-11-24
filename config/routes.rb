@@ -2,6 +2,8 @@ Palavras::Application.routes.draw do
   resources :palavras do
     post "search", on: :collection
     post "twitter", on: :collection
+    post "facebook", on: :collection
+    get "face_callback", on: :collection
   end
   root :to => "palavras#index"
 

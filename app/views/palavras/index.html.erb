@@ -21,7 +21,7 @@
   <tr>
     <td style="font-size: 20px; padding: 0 20px;"><%= palavra.word %></td>
     <td><%= button_to 'Post to Twitter', { action: "twitter", word: palavra.word } %></td>
-    <td><%= link_to 'Post to Facebook', palavra %></td>
+    <td><%= button_to 'Post to Facebook', { action: "facebook", word: palavra.word } %></td>
     <td><%= link_to 'Show', palavra %></td>
     <td><%= link_to 'Edit', edit_palavra_path(palavra) %></td>
     <td><%= link_to 'Destroy', palavra, confirm: 'Are you sure?', method: :delete %></td>
