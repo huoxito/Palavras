@@ -131,6 +131,9 @@ class PalavrasController < ApplicationController
   end
 
   def facebook
+
+    session[:word] = params[:word]
+
     auth = FbGraph::Auth.new("143306939107919", "d94493c784b5f9e10f13ff0dd17c2562")
     auth.client.redirect_uri = "http://localhost:3000/palavras/face_callback"
     redirect_to auth.client.authorization_uri(
@@ -146,7 +149,7 @@ class PalavrasController < ApplicationController
     access_token = auth.client.access_token!  # => Rack::OAuth2::AccessToken
     me = FbGraph::User.me(access_token)
     me.feed!(
-       :message => 'Updating via FbGraph the word',
+       :message => "Updating via FbGraph the word #{session[:word]}",
        #:picture => 'https://graph.facebook.com/matake/picture',
        #:link => 'http://github.com/nov/fb_graph',
        #:name => 'FbGraph',
@@ -154,6 +157,7 @@ class PalavrasController < ApplicationController
     )
     # FbGraph::User.me(access_token).fetch # => FbGraph::User
 
+    session.delete :word
     redirect_to palavras_url, notice: "Posted to facebook"  
   end
 
